@@ -33,7 +33,8 @@ class UserListScreen extends StatelessWidget {
                                   child: Text('$index'),
                                   foregroundColor: Colors.white,
                                 ),
-                                title: Text('Name: ${model.users[index].name}'),
+                                title: Text(
+                                    'Name: ${model.users[index].name} , Category: ${model.users[index].userCategory.name}'),
                                 subtitle: Text(
                                     '${model.users[index].phone}, ${model.users[index].address}'),
                               ),

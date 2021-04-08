@@ -3,16 +3,26 @@ import 'package:hasurademo/_core/models/hasuraSchema.dart';
 import 'package:hasurademo/_core/models/userModel.dart';
 import 'package:observable_ish/list/list.dart';
 import 'package:hasurademo/_core/services/hasuraService.dart';
+import 'package:observable_ish/observable_ish.dart';
 import 'package:stacked/stacked.dart';
 
 class UserService with ReactiveServiceMixin {
   HasuraService _hasuraService = locator<HasuraService>();
   RxList<UserModel> _users = RxList();
+  RxValue<UserCategoriesModel> pickedUserCategory =
+      RxValue<UserCategoriesModel>(UserCategoriesModel());
   UserService() {
-    listenToReactiveValues([_users]);
-    fetchCategories();
+    listenToReactiveValues([_users, pickedUserCategory]);
   }
   List<UserModel> get list => _users;
+  resetPickedCategory() {
+    pickedUserCategory.value = UserCategoriesModel();
+  }
+
+  pickUserCategory(UserCategoriesModel val) {
+    pickedUserCategory.value = val;
+    notifyListeners();
+  }
 
   Future deleteUser(index) async {
     try {
@@ -25,6 +35,7 @@ class UserService with ReactiveServiceMixin {
   }
 
   Future addUsers(data) async {
+    resetPickedCategory();
     data = _hasuraService.serialize(Map.from(data));
     try {
       var resp = await _hasuraService.mutation(addUserSchema(data));
@@ -45,11 +56,9 @@ class UserService with ReactiveServiceMixin {
   Future fetchCategories() async {
     try {
       var resp = await _hasuraService.query(userCategoryFetchSchema);
-      resp.listen((event) {
-        return List.from(event['data']['user_categories'])
-            .map((ele) => UserCategoriesModel.fromJson(ele))
-            .toList();
-      });
+      return List.from(resp['data']['user_categories'])
+          .map((ele) => UserCategoriesModel.fromJson(ele))
+          .toList();
     } catch (e) {
       print(e);
     }

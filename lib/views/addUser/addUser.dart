@@ -26,6 +26,12 @@ class AddUserScreen extends StatelessWidget {
                 labelText: "Address",
                 onChanged: model.onText,
               ),
+              InkWell(
+                onTap: model.pickCategory,
+                child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(model.category ?? "pick a category")),
+              ),
               Container(
                   padding: const EdgeInsets.all(8.0),
                   width: double.infinity,

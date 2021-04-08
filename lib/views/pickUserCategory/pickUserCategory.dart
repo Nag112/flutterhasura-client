@@ -8,7 +8,23 @@ class PickUserCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PickUserCategoryViewModel>.reactive(
-      builder: (context, model, child) => Scaffold(),
+      onModelReady: (model) => model.onReady(),
+      builder: (context, model, child) => Scaffold(
+        body: Container(
+          child: model.isBusy
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemCount: model.categories.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text("${model.categories[index].name}"),
+                      onTap: () => model.selectCategory(index),
+                    );
+                  }),
+        ),
+      ),
       viewModelBuilder: () => PickUserCategoryViewModel(),
     );
   }

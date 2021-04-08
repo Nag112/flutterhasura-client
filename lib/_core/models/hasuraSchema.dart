@@ -5,6 +5,10 @@ const String userFetchSchema = """
         phone
         name
         address
+       user_category{
+          name
+          id
+        }
       }
   }
 """;
@@ -23,6 +27,10 @@ String addUserSchema(data) => """mutation addUser {
       id
       name
       phone
+      user_category{
+          name
+          id
+        }
     }
   }
 }""";
@@ -35,12 +43,15 @@ String deleteUserSchema(data) => """mutation MyQuery {
   }
 }""";
 
-String editUserSchema(id,data) => """mutation MyQuery {
+String editUserSchema(id, data) => """mutation MyQuery {
    update_user(where: {id:{_eq:$id}}},_set:$data) {
     returning {
       name
       id
       address
+       user_category{
+          name
+        }
     }
   }
 }""";
