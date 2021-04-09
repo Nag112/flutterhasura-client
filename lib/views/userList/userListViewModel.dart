@@ -25,6 +25,10 @@ class UserListScreenViewModel extends ReactiveViewModel {
   addUser() {
     _nav.navigateTo(Routes.addUserScreen);
   }
+  refreshUsers()
+  {
+    
+  }
 
   onReady() async {
     setBusy(true);

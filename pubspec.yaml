@@ -33,6 +33,7 @@ dependencies:
   hive_flutter: ^1.0.0
   observable_ish: ^3.0.0
   path_provider: ^2.0.1
+  pull_to_refresh: ^1.6.4
   stacked: ^2.0.2
   stacked_hooks: ^0.2.0
   stacked_services: ^0.8.2
